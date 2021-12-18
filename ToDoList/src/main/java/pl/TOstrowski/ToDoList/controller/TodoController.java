@@ -1,6 +1,6 @@
 package pl.TOstrowski.ToDoList.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.TOstrowski.ToDoList.model.TodoItem;
 import pl.TOstrowski.ToDoList.repo.TodoRepo;
@@ -8,31 +8,43 @@ import pl.TOstrowski.ToDoList.repo.TodoRepo;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/todo")
 public class TodoController {
 
-    @Autowired
-    private TodoRepo todoRepo;
+    private final TodoRepo todoRepo;
 
-    @GetMapping
+    @GetMapping("/todo")
     public List<TodoItem> findAll(){
         return todoRepo.findAll();
     }
 
-    @PostMapping
+    @PostMapping("/todo")
     public TodoItem save(@Valid @NotNull @RequestBody TodoItem todoItem){
-        return todoRepo.save(todoItem);
+        Optional<TodoItem> byId = todoRepo.findById(todoItem.getId());
+        if(byId.isEmpty()){
+            return todoRepo.save(todoItem);
+        } else {
+            throw new IllegalStateException("Podane ID znajduje sie juz w bazie");
+        }
+
     }
 
-    @PutMapping
+    @PutMapping("/todo")
     public TodoItem update(@Valid @NotNull @RequestBody TodoItem todoItem){
+        TodoItem byId = todoRepo.findById(todoItem.getId()).orElseThrow(
+                () -> new IllegalStateException("Podano złe ID!") );
         return todoRepo.save(todoItem);
+
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/todo/{id}")
     public void delete(@PathVariable Long id){
+        TodoItem byId = todoRepo.findById(id).orElseThrow(
+                () -> new IllegalStateException("Podano złe ID!")
+        );
         todoRepo.deleteById(id);
     }
 
