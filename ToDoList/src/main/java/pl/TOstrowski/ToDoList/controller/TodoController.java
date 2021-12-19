@@ -2,6 +2,7 @@ package pl.TOstrowski.ToDoList.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import pl.TOstrowski.ToDoList.exception.TodoNotFoundException;
 import pl.TOstrowski.ToDoList.model.TodoItem;
 import pl.TOstrowski.ToDoList.repo.TodoRepo;
 
@@ -27,7 +28,7 @@ public class TodoController {
         if(byId.isEmpty()){
             return todoRepo.save(todoItem);
         } else {
-            throw new IllegalStateException("Podane ID znajduje sie juz w bazie");
+            throw new TodoNotFoundException(todoItem.getId());
         }
 
     }
@@ -35,7 +36,7 @@ public class TodoController {
     @PutMapping("/todo")
     public TodoItem update(@Valid @NotNull @RequestBody TodoItem todoItem){
         TodoItem byId = todoRepo.findById(todoItem.getId()).orElseThrow(
-                () -> new IllegalStateException("Podano złe ID!") );
+                () -> new TodoNotFoundException(todoItem.getId()) );
         return todoRepo.save(todoItem);
 
     }
@@ -43,7 +44,7 @@ public class TodoController {
     @DeleteMapping("/todo/{id}")
     public void delete(@PathVariable Long id){
         TodoItem byId = todoRepo.findById(id).orElseThrow(
-                () -> new IllegalStateException("Podano złe ID!")
+                () -> new TodoNotFoundException(id)
         );
         todoRepo.deleteById(id);
     }
