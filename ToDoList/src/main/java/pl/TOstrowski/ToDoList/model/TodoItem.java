@@ -1,26 +1,31 @@
-package pl.TOstrowski.ToDoList.model;
+package pl.tostrowski.todolist.model;
 
 
-import lombok.*;
+import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class TodoItem {
+public class ToDoItem {
 
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
-    @NotBlank
+    @NotNull
     private String title;
+
     private boolean done;
 
 }

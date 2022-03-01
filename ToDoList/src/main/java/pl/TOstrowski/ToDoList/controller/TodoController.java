@@ -1,52 +1,70 @@
-package pl.TOstrowski.ToDoList.controller;
+package pl.tostrowski.todolist.controller;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.TOstrowski.ToDoList.exception.TodoNotFoundException;
-import pl.TOstrowski.ToDoList.model.TodoItem;
-import pl.TOstrowski.ToDoList.repo.TodoRepo;
+import pl.tostrowski.todolist.model.ToDoItem;
+import pl.tostrowski.todolist.service.ToDoService;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Optional;
 
-@RequiredArgsConstructor
-@RestController
-public class TodoController {
+@RequestMapping("/todo")
+@Controller
+public class ToDoController {
 
-    private final TodoRepo todoRepo;
+    private final ToDoService toDoService;
 
-    @GetMapping("/todo")
-    public List<TodoItem> findAll(){
-        return todoRepo.findAll();
+    @Autowired
+    public ToDoController(ToDoService toDoService) {
+        this.toDoService = toDoService;
     }
 
-    @PostMapping("/todo")
-    public TodoItem save(@Valid @NotNull @RequestBody TodoItem todoItem){
-        Optional<TodoItem> byId = todoRepo.findById(todoItem.getId());
-        if(byId.isEmpty()){
-            return todoRepo.save(todoItem);
-        } else {
-            throw new TodoNotFoundException(todoItem.getId());
-        }
-
+    @GetMapping()
+    public String findAll(Model model){
+        model.addAttribute("items", toDoService.getItems());
+        return "home";
     }
 
-    @PutMapping("/todo")
-    public TodoItem update(@Valid @NotNull @RequestBody TodoItem todoItem){
-        TodoItem byId = todoRepo.findById(todoItem.getId()).orElseThrow(
-                () -> new TodoNotFoundException(todoItem.getId()) );
-        return todoRepo.save(todoItem);
-
+    @GetMapping("/{id}")
+    public String findById(Model model, @PathVariable Long id){
+        model.addAttribute("item", toDoService.getItem(id));
+        return "todoitem";
     }
 
-    @DeleteMapping("/todo/{id}")
-    public void delete(@PathVariable Long id){
-        TodoItem byId = todoRepo.findById(id).orElseThrow(
-                () -> new TodoNotFoundException(id)
-        );
-        todoRepo.deleteById(id);
+    @GetMapping("/add")
+    public String addItem(Model model){
+        ToDoItem toDoItem = new ToDoItem();
+        model.addAttribute("toDoItem", toDoItem);
+        return "additem";
+    }
+
+    @PostMapping("/add")
+    public String save(@ModelAttribute ToDoItem todoItem){
+        toDoService.addItem(todoItem);
+        return "redirect:/todo";
+    }
+
+    @GetMapping("/mark/{id}")
+    public String markAsDone(@PathVariable Long id, @ModelAttribute ToDoItem toDoItem){
+        toDoService.markAsDone(id);
+        return "redirect:/todo";
+    }
+
+    @PostMapping("/{id}")
+    public String delete(@PathVariable Long id){
+        toDoService.deleteItem(id);
+        return "redirect:/todo";
+    }
+
+    @PutMapping("/{id}")
+    public ToDoItem updateItem(@PathVariable Long id, @RequestBody @Valid ToDoItem toDoItem){
+        return toDoService.putItem(id, toDoItem);
+    }
+
+    @PatchMapping("/{id}")
+    public ToDoItem patchItem(@PathVariable Long id, @RequestBody @Valid ToDoItem toDoItem) {
+        return toDoService.patchItem(id, toDoItem);
     }
 
 }
