@@ -30,4 +30,6 @@
   [Mark task as done]     localhost:8080/todo/mark/{id}
 ```
 
+## How it looks
 
+<img src="https://i.imgur.com/nTUqDcg.jpg">
