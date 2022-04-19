@@ -32,11 +32,13 @@
 
 ## How it looks
 
-Home page without tasks
+
+
+<h3 align='center'>Home page without tasks</h3>
 <img src="https://i.imgur.com/cAojl5w.png">
 
-Home page with tasks
+<h3 align='center'>Home page with tasks</h3>
 <img src="https://i.imgur.com/Gqh6x3W.png">
 
-Add task page
+<h3 align='center'>Add task page</h3>
 <img src="https://i.imgur.com/GVi4oEG.png">
