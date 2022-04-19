@@ -1,5 +1,6 @@
 package pl.tostrowski.todolist.controller;
 
+import org.hibernate.sql.ordering.antlr.OrderingSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +9,9 @@ import pl.tostrowski.todolist.model.ToDoItem;
 import pl.tostrowski.todolist.service.ToDoService;
 
 import javax.validation.Valid;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.function.Function;
 
 @RequestMapping("/todo")
 @Controller
@@ -21,44 +25,44 @@ public class ToDoController {
     }
 
     @GetMapping()
-    public String findAll(Model model){
+    public String findAll(Model model) {
         model.addAttribute("items", toDoService.getItems());
         return "home";
     }
 
     @GetMapping("/{id}")
-    public String findById(Model model, @PathVariable Long id){
+    public String findById(Model model, @PathVariable Long id) {
         model.addAttribute("item", toDoService.getItem(id));
         return "todoitem";
     }
 
     @GetMapping("/add")
-    public String addItem(Model model){
+    public String addItem(Model model) {
         ToDoItem toDoItem = new ToDoItem();
         model.addAttribute("toDoItem", toDoItem);
         return "additem";
     }
 
     @PostMapping("/add")
-    public String save(@ModelAttribute ToDoItem todoItem){
+    public String save(@ModelAttribute ToDoItem todoItem) {
         toDoService.addItem(todoItem);
         return "redirect:/todo";
     }
 
     @GetMapping("/mark/{id}")
-    public String markAsDone(@PathVariable Long id, @ModelAttribute ToDoItem toDoItem){
+    public String markAsDone(@PathVariable Long id, @ModelAttribute ToDoItem toDoItem) {
         toDoService.markAsDone(id);
         return "redirect:/todo";
     }
 
     @PostMapping("/{id}")
-    public String delete(@PathVariable Long id){
+    public String delete(@PathVariable Long id) {
         toDoService.deleteItem(id);
         return "redirect:/todo";
     }
 
     @PutMapping("/{id}")
-    public ToDoItem updateItem(@PathVariable Long id, @RequestBody @Valid ToDoItem toDoItem){
+    public ToDoItem updateItem(@PathVariable Long id, @RequestBody @Valid ToDoItem toDoItem) {
         return toDoService.putItem(id, toDoItem);
     }
 

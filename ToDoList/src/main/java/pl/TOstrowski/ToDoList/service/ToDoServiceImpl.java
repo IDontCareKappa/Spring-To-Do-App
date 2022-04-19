@@ -7,7 +7,6 @@ import pl.tostrowski.todolist.exception.ToDoException;
 import pl.tostrowski.todolist.model.ToDoItem;
 import pl.tostrowski.todolist.repository.ToDoRepo;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -20,26 +19,26 @@ public class ToDoServiceImpl implements ToDoService {
         this.toDoRepo = toDoRepo;
     }
 
-    public List<ToDoItem> getItems(){
-        return toDoRepo.findAll();
+    public List<ToDoItem> getItems() {
+        return toDoRepo.findAllByTitleNotNullOrderByPriorityDesc();
     }
 
-    public ToDoItem getItem(Long id){
+    public ToDoItem getItem(Long id) {
         return toDoRepo.findById(id)
                 .orElseThrow(() -> new ToDoException(ToDoError.ITEM_NOT_FOUND));
     }
 
-    public ToDoItem addItem(ToDoItem toDoItem){
+    public ToDoItem addItem(ToDoItem toDoItem) {
         return toDoRepo.save(toDoItem);
     }
 
-    public void deleteItem(Long id){
+    public void deleteItem(Long id) {
         ToDoItem toDoItem = toDoRepo.findById(id)
                 .orElseThrow(() -> new ToDoException(ToDoError.ITEM_NOT_FOUND));
         toDoRepo.delete(toDoItem);
     }
 
-    public ToDoItem putItem(Long id, ToDoItem toDoItem){
+    public ToDoItem putItem(Long id, ToDoItem toDoItem) {
         return toDoRepo.findById(id)
                 .map(toDoUpdated -> {
                     toDoUpdated.setTitle(toDoItem.getTitle());
@@ -49,7 +48,7 @@ public class ToDoServiceImpl implements ToDoService {
                 .orElseThrow(() -> new ToDoException(ToDoError.ITEM_NOT_FOUND));
     }
 
-    public ToDoItem patchItem(Long id, ToDoItem toDoItem){
+    public ToDoItem patchItem(Long id, ToDoItem toDoItem) {
         return toDoRepo.findById(id)
                 .map(toDoUpdated -> {
                     if (!StringUtils.isEmpty(toDoItem.getTitle()))
@@ -60,7 +59,7 @@ public class ToDoServiceImpl implements ToDoService {
                 .orElseThrow(() -> new ToDoException(ToDoError.ITEM_NOT_FOUND));
     }
 
-    public void markAsDone(Long id){
+    public void markAsDone(Long id) {
         ToDoItem toDoItem = toDoRepo.findById(id)
                 .orElseThrow(() -> new ToDoException(ToDoError.ITEM_NOT_FOUND));
         toDoItem.setDone(true);

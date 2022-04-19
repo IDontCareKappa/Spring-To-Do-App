@@ -26,6 +26,10 @@ public class ToDoItem {
     @NotNull
     private String title;
 
+    private String description;
+
     private boolean done;
+
+    private boolean priority;
 
 }

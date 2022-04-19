@@ -16,38 +16,53 @@
 
 </head>
 <body>
-    <div th:insert="navbar/Navbar :: navbar"></div>
-    <div class="bg"></div>
-    <div class="table-container fadeIn">
-        <div class="title  p-2"><h1 class="text-white">Add Task</h1></div>
-        <div class="box box-primary p-2 fadeIn">
-            <form th:action="@{/todo/add}" th:object="${toDoItem}" method="POST">
-                <div class="box fadeIn">
-                    <div class="box-body">
-                        <div class="">
-                            <label class="text-dark"><b>Enter Title</b></label> <br>
-                            <textarea th:field="*{title}" class="bg-minor p-2 h2" minlength="10" maxlength="100" name="title" id="title" cols="50" rows="4"
-                                      required></textarea>
+<div th:insert="navbar/Navbar :: navbar"></div>
+<div class="bg"></div>
+<div class="table-container fadeIn">
+    <div class="title  p-2"><h1 class="text-white">Add Task</h1></div>
+    <div class="box box-primary p-2 fadeIn">
+        <form th:action="@{/todo/add}" th:object="${toDoItem}" method="POST">
+            <div class="box fadeIn">
+                <div class="box-body">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-1"></div>
+                        <div class="col-6">
+                            <label class="text-dark"><b>Title</b></label> <br>
+                            <input type="text" th:field="*{title}" class="bg-light-dark p-3 rounded border-top-0 border-start-0 border-end-0 border-bottom-2 w-100" minlength="5" maxlength="100"
+                                      name="title" id="title" required placeholder="Enter title"/>
+                        </div>
+                        <div class="col-1"></div>
+                        <div class="col-6 mt-5">
+                            <label class="text-dark"><b>Description (optional)</b></label> <br>
+                            <textarea th:field="*{description}" class="bg-light-dark p-3 rounded border-top-0 border-start-0 border-end-0 border-bottom-2 w-100" maxlength="200"
+                                      name="description" id="description" cols="50" rows="1" placeholder="Enter description"></textarea>
+
+                        </div>
+                        <div class="col-12 row justify-content-center text-center p-3 mt-5">
+                            <label class="h3 col-2" for="priority">Priority</label>
+                            <input class="col-1 h-75" th:field="*{priority}" type="checkbox" name="priority"
+                                   id="priority" value="priority">
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="row d-flex justify-content-center fadeIn">
-                    <div class="addPostBtn p-0 col-11 fadeIn">
-                        <button type="submit" value="" class="box-shadow">
+            <div class="row d-flex justify-content-center fadeIn mt-5">
+                <div class="addPostBtn p-0 col-6 fadeIn">
+                    <button type="submit" value="" class="box-shadow">
                                 <span class="row">
                                     <span class="col align-self-start"></span>
-                                    <span class="col align-self-center">ADD</span>
+                                    <span class="col align-self-center">ADD TASK</span>
                                     <span class="col align-self-end d-flex justify-content-end my-auto">
                                         <i class="fa fa-arrow-right" aria-hidden="true"></i>
                                     </span>
                                 </span>
-                        </button>
-                    </div>
+                    </button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
-    <div th:insert="footer/Footer :: footer"></div>
+</div>
+<div th:insert="footer/Footer :: footer"></div>
 </body>
 </html>

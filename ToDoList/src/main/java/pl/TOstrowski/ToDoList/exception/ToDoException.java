@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ToDoException extends  RuntimeException{
+public class ToDoException extends RuntimeException {
 
     private ToDoError toDoError;
 
