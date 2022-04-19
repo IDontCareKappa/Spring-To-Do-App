@@ -3,8 +3,8 @@
 ## Key features
 * Adding task to do
 * Marking tasks that have been completed
-* Preview of a single task
 * Task are divided into done and not done
+* Tasks are divided to priority tasks and normal tasks
 * Removing tasks
 
 ## Technologies used to develop application
@@ -18,6 +18,7 @@
 * Frontend
   - Thymeleaf
   - Bootstrap
+  - Font Awesome
 * Tools
   - IntelliJ IDEA
 
@@ -25,11 +26,17 @@
 
 ```
   [Home Page, all tasks]  localhost:8080/todo
-  [Single task]           localhost:8080/todo/{id}
   [New task form]         localhost:8080/todo/add
   [Mark task as done]     localhost:8080/todo/mark/{id}
 ```
 
 ## How it looks
 
-<img src="https://i.imgur.com/nTUqDcg.jpg">
+Home page without tasks
+<img src="https://i.imgur.com/cAojl5w.png">
+
+Home page with tasks
+<img src="https://i.imgur.com/Gqh6x3W.png">
+
+Add task page
+<img src="https://i.imgur.com/GVi4oEG.png">
